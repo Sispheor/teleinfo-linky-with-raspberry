@@ -133,6 +133,10 @@ def main():
             except Exception as e:
                 logging.error("Exception : %s" % e, exc_info=True)
                 logging.error("%s %s" % (key, val))
+
+            # Optional, but recommended: sleep 10 ms (0.01 sec) once per loop to let
+            # other threads on your PC run during this time.
+            time.sleep(0.01)
             line = ser.readline()
 
 
