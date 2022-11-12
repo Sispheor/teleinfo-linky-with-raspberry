@@ -177,7 +177,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
+        "w": 3,
         "x": 3,
         "y": 0
       },
@@ -291,8 +291,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 8,
+        "w": 3,
+        "x": 6,
         "y": 0
       },
       "id": 14,
@@ -373,6 +373,332 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "yellow",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 9,
+        "y": 0
+      },
+      "id": 19,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "diff"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.3",
+      "targets": [
+        {
+          "alias": "HP",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "RBEXsqNVk"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "HCHC",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "HP",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "RBEXsqNVk"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "HCHP",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "($A*$prix_kwh_hc*0.00001+$B*$prix_kwh_hp*0.00001) ",
+          "hide": false,
+          "refId": "C",
+          "type": "math"
+        }
+      ],
+      "title": "Total HC + HP",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "RBEXsqNVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#77b0d9",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 12,
+        "y": 0
+      },
+      "id": 20,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "diff"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.3",
+      "targets": [
+        {
+          "alias": "HP",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "RBEXsqNVk"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "HCHC",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "HP",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "RBEXsqNVk"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "HCHP",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "($A+$B) *$prix_kwh_normal*0.00001",
+          "hide": false,
+          "refId": "C",
+          "type": "math"
+        }
+      ],
+      "title": "Tarif normal indicatif",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "RBEXsqNVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "palette-classic"
           },
           "custom": {
@@ -389,8 +715,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
-        "x": 13,
+        "w": 4,
+        "x": 14,
         "y": 0
       },
       "id": 17,
@@ -521,59 +847,43 @@
         "type": "influxdb",
         "uid": "RBEXsqNVk"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "yellow",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "yellow",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
-          "unit": "currencyEUR"
+          "unit": "amp"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 5,
-        "x": 19,
+        "h": 6,
+        "w": 3,
+        "x": 18,
         "y": 0
       },
-      "id": 19,
-      "links": [],
-      "maxDataPoints": 100,
+      "id": 25,
       "options": {
-        "colorMode": "background",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "diff"
+            "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^IINST\\.last$/",
           "values": false
         },
         "textMode": "auto"
@@ -581,27 +891,12 @@
       "pluginVersion": "9.2.3",
       "targets": [
         {
-          "alias": "HP",
           "datasource": {
             "type": "influxdb",
             "uid": "RBEXsqNVk"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "HCHC",
+          "groupBy": [],
+          "measurement": "IINST",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -616,37 +911,77 @@
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "last"
               }
             ]
           ],
           "tags": []
+        }
+      ],
+      "title": "Intensité Instantanée",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "RBEXsqNVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "kvoltamp"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 21,
+        "y": 0
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^PAPP$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.3",
+      "targets": [
         {
-          "alias": "HP",
           "datasource": {
             "type": "influxdb",
             "uid": "RBEXsqNVk"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "HCHP",
+          "groupBy": [],
+          "measurement": "PAPP",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "B",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
@@ -657,26 +992,17 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "mean"
+                "params": [
+                  " / 1000"
+                ],
+                "type": "math"
               }
             ]
           ],
           "tags": []
-        },
-        {
-          "datasource": {
-            "name": "Expression",
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
-          "expression": "($A*$prix_kwh_hc*0.00001+$B*$prix_kwh_hp*0.00001) ",
-          "hide": false,
-          "refId": "C",
-          "type": "math"
         }
       ],
-      "title": "Total HC + HP",
+      "title": "Puissance apparente instantanée",
       "type": "stat"
     },
     {
@@ -720,7 +1046,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
+        "w": 3,
         "x": 3,
         "y": 3
       },
@@ -815,8 +1141,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 8,
+        "w": 3,
+        "x": 6,
         "y": 3
       },
       "id": 11,
@@ -877,9 +1203,9 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#77b0d9",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
+          "decimals": 2,
           "mappings": [
             {
               "options": {
@@ -895,7 +1221,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
@@ -904,27 +1230,27 @@
               }
             ]
           },
-          "unit": "currencyEUR"
+          "unit": "watth"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 19,
+        "w": 3,
+        "x": 9,
         "y": 3
       },
-      "id": 20,
+      "id": 26,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "background",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "diff"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -934,25 +1260,11 @@
       "pluginVersion": "9.2.3",
       "targets": [
         {
-          "alias": "HP",
           "datasource": {
             "type": "influxdb",
             "uid": "RBEXsqNVk"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "groupBy": [],
           "hide": true,
           "measurement": "HCHC",
           "orderByTime": "ASC",
@@ -969,32 +1281,18 @@
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "spread"
               }
             ]
           ],
           "tags": []
         },
         {
-          "alias": "HP",
           "datasource": {
             "type": "influxdb",
             "uid": "RBEXsqNVk"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "groupBy": [],
           "hide": true,
           "measurement": "HCHP",
           "orderByTime": "ASC",
@@ -1011,7 +1309,7 @@
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "spread"
               }
             ]
           ],
@@ -1023,13 +1321,13 @@
             "type": "__expr__",
             "uid": "__expr__"
           },
-          "expression": "($A+$B) *$prix_kwh_normal*0.00001",
+          "expression": "$A+$B",
           "hide": false,
           "refId": "C",
           "type": "math"
         }
       ],
-      "title": "Tarif normal indicatif",
+      "title": "Total",
       "type": "stat"
     },
     {
@@ -1247,14 +1545,10 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
-          "unit": "string"
+          "unit": "amp"
         },
         "overrides": []
       },
@@ -1286,50 +1580,6 @@
       "pluginVersion": "9.2.0",
       "targets": [
         {
-          "alias": "Puissance apparente (VA)",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "RBEXsqNVk"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "none"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "PAPP",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\")::integer AS value FROM \"HCHC\" WHERE $timeFilter GROUP BY time(1s) fill(linear)",
-          "rawQuery": false,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mode"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
           "alias": "Intensite (A)",
           "datasource": {
             "type": "influxdb",
@@ -1353,7 +1603,7 @@
           "measurement": "IINST",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"value\")::integer AS value FROM \"HCHC\" WHERE $timeFilter GROUP BY time(1s) fill(linear)",
+          "query": "SELECT mode(\"value\") FROM \"IINST\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1374,7 +1624,7 @@
           "tags": []
         }
       ],
-      "title": "Puissance apparante / Intensité",
+      "title": "Intensité (Ampere)",
       "type": "timeseries"
     },
     {
@@ -1497,6 +1747,136 @@
         "type": "influxdb",
         "uid": "RBEXsqNVk"
       },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "kvoltamp"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Puissance apparente (kVA)",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "RBEXsqNVk"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "PAPP",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " / 1000"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Puissance apparente (KvA)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "RBEXsqNVk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1553,8 +1933,8 @@
       "gridPos": {
         "h": 9,
         "w": 12,
-        "x": 12,
-        "y": 15
+        "x": 0,
+        "y": 24
       },
       "id": 2,
       "links": [],
@@ -1675,6 +2055,6 @@
   "timezone": "",
   "title": "Conso Elec",
   "uid": "vrq6Vgigz",
-  "version": 14,
+  "version": 16,
   "weekStart": ""
 }

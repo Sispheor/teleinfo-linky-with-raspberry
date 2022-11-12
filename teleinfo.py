@@ -30,6 +30,8 @@ import requests
 import serial
 from influxdb import InfluxDBClient
 
+# time to wait before capturing a new frame in second
+CAPTURE_FREQUENCY = 60
 
 # clés téléinfo
 INT_MESURE_KEYS = ['BASE', 'IMAX', 'HCHC', 'IINST', 'PAPP', 'ISOUSC', 'ADCO', 'HCHP']
@@ -100,12 +102,24 @@ def main():
             line = ser.readline()
 
         # lecture de la première ligne de la première trame
-        line = ser.readline()
+        # line = ser.readline()
 
         while True:
+          # get the current line
+          line = ser.readline()
+          # wait for a new frame
+          logging.debug("Wait for the beginning of a frame")
+          while b'\x02' not in line:  # MOTDETAT line
+            line = ser.readline()
+          logging.debug(f"MOTDETAT line detected: {line}")
+          # new frame. current line == MOTDETAT
+          # take the next line
+          line = ser.readline()
+          # print(f"next line: {line}")
+          while b'\x02' not in line:  # until we get again the MOTDETAT, we process received data
+            # line = ser.readline()
+            # logging.debug(f"current line: {line}")
             line_str = line.decode("utf-8")
-            logging.debug(line)
-
             try:
                 # separation sur espace /!\ attention le caractere de controle 0x32 est un espace aussi
                 [key, val, *_] = line_str.split(" ")
@@ -118,26 +132,30 @@ def main():
                     # creation du champ pour la trame en cours avec cast des valeurs de mesure en "integer"
                     trame[key] = int(val) if key in INT_MESURE_KEYS else val
 
-                if b'\x03' in line:  # si caractère de fin dans la ligne, on insère la trame dans influx
-                    del trame['ADCO']  # adresse du compteur : confidentiel!
-                    time_measure = time.time()
+                # if b'\x03' in line:  # si caractère de fin dans la ligne, on insère la trame dans influx
+                if "ADCO" in trame:
+                  line = ser.readline()  # adresse du compteur : confidentiel!
+                time_measure = time.time()
 
-                    # insertion dans influxdb
-                    add_measures(trame, time_measure)
+                # insertion dans influxdb
+                add_measures(trame, time_measure)
 
-                    # ajout timestamp pour debugger
-                    trame["timestamp"] = int(time_measure)
-                    logging.debug(trame)
+                # ajout timestamp pour debugger
+                trame["timestamp"] = int(time_measure)
+                logging.debug(str(trame))
 
-                    trame = dict()  # on repart sur une nouvelle trame
+                trame = dict()  # on repart sur une nouvelle trame
             except Exception as e:
                 logging.error("Exception : %s" % e, exc_info=True)
                 logging.error("%s %s" % (key, val))
 
-            # Optional, but recommended: sleep 10 ms (0.01 sec) once per loop to let
-            # other threads on your PC run during this time.
-            time.sleep(0.01)
+            # take the next line
             line = ser.readline()
+
+          # Optional, but recommended: sleep 10 ms (0.01 sec) once per loop to let
+          # other threads on your PC run during this time.
+          logging.debug(f"wait {CAPTURE_FREQUENCY} seconds before reading again")
+          time.sleep(CAPTURE_FREQUENCY)
 
 
 if __name__ == '__main__':
