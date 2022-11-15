@@ -37,7 +37,8 @@ CAPTURE_FREQUENCY = 60
 INT_MESURE_KEYS = ['BASE', 'IMAX', 'HCHC', 'IINST', 'PAPP', 'ISOUSC', 'ADCO', 'HCHP']
 
 # création du logguer
-logging.basicConfig(filename='/var/log/teleinfo/releve.log', level=logging.INFO, format='%(asctime)s %(message)s')
+logging.basicConfig(filename='/var/log/teleinfo/releve.log',
+level=logging.INFO, format='%(asctime)s %(message)s')
 logging.info("Teleinfo starting..")
 
 # connexion a la base de données InfluxDB
@@ -60,7 +61,7 @@ while not connected:
         connected = True
 
 
-def add_measures(measures, time_measure):
+def add_measures(measures):
     points = []
     for measure, value in measures.items():
         point = {
@@ -96,29 +97,23 @@ def main():
 
         trame = dict()
 
-        # boucle pour partir sur un début de trame
-        line = ser.readline()
-        while b'\x02' not in line:  # recherche du caractère de début de trame
-            line = ser.readline()
-
-        # lecture de la première ligne de la première trame
-        # line = ser.readline()
+        # Get the current line
+        first_line = ser.readline()
 
         while True:
-          # get the current line
-          line = ser.readline()
+          trame = dict()  # new frame
+          logging.debug(f"first line: {first_line}")
           # wait for a new frame
           logging.debug("Wait for the beginning of a frame")
-          while b'\x02' not in line:  # MOTDETAT line
-            line = ser.readline()
-          logging.debug(f"MOTDETAT line detected: {line}")
+          while b'\x02' not in first_line:  # MOTDETAT line
+            first_line = ser.readline()
+          logging.debug(f"MOTDETAT line detected: {first_line}")
           # new frame. current line == MOTDETAT
+
           # take the next line
           line = ser.readline()
-          # print(f"next line: {line}")
-          while b'\x02' not in line:  # until we get again the MOTDETAT, we process received data
-            # line = ser.readline()
-            # logging.debug(f"current line: {line}")
+          while b'\x02' not in line:  # until we get again the MOTDETAT, we prepare the frame
+            logging.debug(f"metric: {line}")
             line_str = line.decode("utf-8")
             try:
                 # separation sur espace /!\ attention le caractere de controle 0x32 est un espace aussi
@@ -132,19 +127,9 @@ def main():
                     # creation du champ pour la trame en cours avec cast des valeurs de mesure en "integer"
                     trame[key] = int(val) if key in INT_MESURE_KEYS else val
 
-                # if b'\x03' in line:  # si caractère de fin dans la ligne, on insère la trame dans influx
                 if "ADCO" in trame:
-                  line = ser.readline()  # adresse du compteur : confidentiel!
-                time_measure = time.time()
+                  trame.pop("ADCO")
 
-                # insertion dans influxdb
-                add_measures(trame, time_measure)
-
-                # ajout timestamp pour debugger
-                trame["timestamp"] = int(time_measure)
-                logging.debug(str(trame))
-
-                trame = dict()  # on repart sur une nouvelle trame
             except Exception as e:
                 logging.error("Exception : %s" % e, exc_info=True)
                 logging.error("%s %s" % (key, val))
@@ -152,9 +137,12 @@ def main():
             # take the next line
             line = ser.readline()
 
-          # Optional, but recommended: sleep 10 ms (0.01 sec) once per loop to let
-          # other threads on your PC run during this time.
-          logging.debug(f"wait {CAPTURE_FREQUENCY} seconds before reading again")
+          logging.debug(str(trame))
+          # insert frame in influx
+          add_measures(trame)
+          # # Optional, but recommended: sleep 10 ms (0.01 sec) once per loop to let
+          # # other threads on your PC run during this time.
+          logging.debug(f"Wait '{CAPTURE_FREQUENCY}' seconds before reading again")
           time.sleep(CAPTURE_FREQUENCY)
 
 
